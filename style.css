@@ -7,11 +7,12 @@
 body {
     margin: 0px;
     font-family: sans-serif;
+    background-color: #f2f2f2;
 }
 
 /***********************************************************************/
 
-.top_area {
+.top_bar {
     background-color: #333;
     display: flex;
     height: 5rem;
@@ -21,7 +22,7 @@ body {
     justify-content: start;
 }
 
-.top_area>* {
+.top_bar > * {
     height: 3.1rem;
     background-color: #454444;
     border-radius: 7px;
@@ -40,7 +41,7 @@ body {
 .color {
     height: 1.9rem;
     width: 3.9rem;
-    border-radius: 7px;
+    border-radius: 5px;
 }
 
 .pink {
@@ -56,7 +57,7 @@ body {
 }
 
 .black {
-    background-color: rgb(43, 39, 39);
+    background-color: black;
 }
 
 /***********************************************************************/
@@ -86,3 +87,55 @@ body {
 
 /***********************************************************************/
 
+.task_creation_box {
+    height: 19rem;
+    width: 33rem;
+    position: relative;
+    top: 4rem;
+    left: calc(50vw - 16.5rem);
+    border-radius: 0.6rem;
+    box-shadow: 4px 4px 4px #ccc;
+    display: flex;
+}
+
+/***********************************************************************/
+
+.editing_box {
+    background-color: white;
+    height: 100%;
+    width: 68%;
+    padding: 1.8rem;
+    border-radius: 0.6rem 0rem 0rem 0.6rem;
+}
+
+.text_box {
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 1.7rem;
+    font-family: m;
+}
+
+/***********************************************************************/
+
+.colors_selection {
+    background-color: #343131;
+    height: 100%;
+    width: 32%;
+    border-radius: 0rem 0.6rem 0.6rem 0rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    padding-top : 7px;
+    padding-bottom : 7px;
+}
+
+.color_box {
+    height: 15%;
+    width: 50%;
+    border-radius: 5px;
+}
+
+/***********************************************************************/
