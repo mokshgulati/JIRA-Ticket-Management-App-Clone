@@ -1,0 +1,88 @@
+/***********************************************************************/
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0px;
+    font-family: sans-serif;
+}
+
+/***********************************************************************/
+
+.top_area {
+    background-color: #333;
+    display: flex;
+    height: 5rem;
+    align-items: center;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    justify-content: start;
+}
+
+.top_area>* {
+    height: 3.1rem;
+    background-color: #454444;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+}
+
+/***********************************************************************/
+
+.colors_container {
+    width: 30rem;
+    margin-right: 18rem;
+    justify-content: space-evenly;
+}
+
+.color {
+    height: 1.9rem;
+    width: 3.9rem;
+    border-radius: 7px;
+}
+
+.pink {
+    background-color: lightpink;
+}
+
+.blue {
+    background-color: lightblue;
+}
+
+.green {
+    background-color: lightgreen;
+}
+
+.black {
+    background-color: rgb(43, 39, 39);
+}
+
+/***********************************************************************/
+
+.add_cross_container {
+    width: 12.5rem;
+    margin-right: 5rem;
+}
+
+.lock_unlock_container {
+    width: 10rem;
+}
+
+.add, .cross, .lock, .unlock {
+    height: 100%;
+    width: 50%;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tool {
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+/***********************************************************************/
+
