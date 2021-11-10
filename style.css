@@ -138,4 +138,34 @@ body {
     border-radius: 5px;
 }
 
+.selected {
+    border: 2px solid oldlace;
+}
+
+/***********************************************************************/
+
+.ticket_box {
+    height: 10rem;
+    width: 14rem;
+}
+
+.filter {
+    background-color: black;
+    height: 12px;
+}
+
+.ticket_task {
+    background-color: white;
+    height: calc(10rem - 12px);
+    width: 14rem;
+}
+
+.task_text {
+    margin: 0.5rem;
+    height: calc(100% - 1rem);
+    width: calc(100% - 1rem);
+    border: none;
+    outline: none;
+}
+
 /***********************************************************************/
