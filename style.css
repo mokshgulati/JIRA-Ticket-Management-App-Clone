@@ -145,19 +145,23 @@ body {
 /***********************************************************************/
 
 .ticket_box {
-    height: 10rem;
-    width: 14rem;
+    height: 8.5rem;
+    width: 12.5rem;
 }
 
 .filter {
-    background-color: black;
     height: 12px;
 }
 
+.task_id{
+    color:rgb(150, 144, 144);
+    /* margin: 0.2rem; */
+    /* margin-left: 0px; */
+ }
+
 .ticket_task {
     background-color: white;
-    height: calc(10rem - 12px);
-    width: 14rem;
+    height: calc(100% - 12px);
 }
 
 .task_text {
@@ -166,6 +170,10 @@ body {
     width: calc(100% - 1rem);
     border: none;
     outline: none;
+}
+
+.task_text::-webkit-scrollbar {
+    display: none;
 }
 
 /***********************************************************************/
