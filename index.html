@@ -6,19 +6,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- FONT AWESOME - (link) needed for using it's icons -->
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <!-- links css file -->
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <!-- top bar that contains all the toolbars -->
     <div class="top_bar">
+
+        <!-- color filtering the tickets -->
         <div class="colors_container">
             <div class="color pink"></div>
             <div class="color blue"></div>
             <div class="color green"></div>
             <div class="color black"></div>
         </div>
+
+        <!-- adding / deleting tickets -->
         <div class="add_cross_container">
             <div class="add">
                 <i class="fas fa-plus tool"></i>
@@ -27,6 +34,8 @@
                 <i class="fas fa-times tool"></i>
             </div>
         </div>
+
+        <!-- locks / unlock the tickets from getting edited -->
         <div class="lock_unlock_container">
             <div class="lock">
                 <i class="fas fa-lock tool"></i>
@@ -36,7 +45,10 @@
             </div>
         </div>
     </div>
+
     <div class="rest_stage">
+
+        <!-- Modal (to create tickets) -->
         <div class="task_creation_box">
             <div class="editing_box">
                 <textarea class="text_box" placeholder="Enter task here."></textarea>
@@ -49,6 +61,8 @@
             </div>
         </div>
     </div>
+
+    <!-- links js files -->
     <script src="https://cdn.jsdelivr.net/npm/short-unique-id@latest/dist/short-unique-id.min.js"></script>
     <script src="script.js"></script>
 </body>
