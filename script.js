@@ -1,17 +1,10 @@
-// Filtering tickets
-// colorsContainer.addEventListener("click", function (e) {
-//     let element = e.target;
-//     if (element != colorsContainer) {
-//         let colorFilter = element.classList[1];
-//         filterTickets(colorFilter);
-//     }
-// })
-
-/********************************************************************************************/
-
+// variables
 let uid = new ShortUniqueId();
 let selectedColor = "black";
+let deleteMode = false;
+let currentFilterColor = "";
 
+// elements
 let inputArea = document.querySelector(".text_box");
 let taskCreationBox = document.querySelector(".task_creation_box");
 let colorsContainer = document.querySelector(".colors_container");
@@ -20,13 +13,15 @@ let allColorSelection = document.querySelectorAll(".color_box");
 let restStage = document.querySelector(".rest_stage");
 let add = document.querySelector(".add");
 let cross = document.querySelector(".cross");
+let lock = document.querySelector(".lock");
+let unlock = document.querySelector(".unlock");
 
-// Show Modal
+// show Modal on display
 add.addEventListener("click", function (e) {
     taskCreationBox.style.display = "flex";
 })
 
-// Color choosing
+// color choosing (from modal) for generating ticket
 colorsSelection.addEventListener("click", function (e) {
     let element = e.target;
     if (element != colorsSelection) {
@@ -38,7 +33,7 @@ colorsSelection.addEventListener("click", function (e) {
     }
 })
 
-// Entering a new task
+// entering a new task in the modal to create ticket
 inputArea.addEventListener("keydown", function (e) {
     if (e.code == "Enter" && inputArea.value) {
         let id = uid();
@@ -48,19 +43,117 @@ inputArea.addEventListener("keydown", function (e) {
     }
 })
 
-function createTask(id, task, color) {
+// how tickets are made and displayed on the wall (inner working)
+function createTickets(color, id, task, flag) {
     let ticketBox = document.createElement("div");
-    ticketBox.setAttribute("class","ticket_box");
+    ticketBox.setAttribute("class", "ticket_box");
     restStage.appendChild(ticketBox);
     ticketBox.innerHTML = `
-    
         <div class="filter ${selectedColor}"></div>
         <div class="ticket_task">
         <h3 class="task-id">${id}</h3>
         <textarea class="task_text" contentEditable="true">${task}</textarea>
         </div>
-        
-        `;
-        
-        
+    `;
 }
+
+// clicking on lock button to disable editing
+lock.addEventListener("click", () => {
+    let ticketTextBoxes = document.querySelectorAll(".task_text");
+    for (let i = 0; i < ticketTextBoxes.length; i++) {
+        ticketTextBoxes[i].contentEditable = false;
+    }
+    unlock.classList.remove(".active");
+    lock.classList.add(".active");
+})
+
+// clicking on unlock button to enable editing
+unlock.addEventListener("click", () => {
+    let ticketTextBoxes = document.querySelectorAll(".task_text");
+    for (let i = 0; i < ticketTextBoxes.length; i++) {
+        ticketTextBoxes[i].contentEditable = true;
+    }
+    lock.classList.remove("active");
+    unlock.classList.add("active");
+})
+
+// enabling cross button to delete tickets
+cross.addEventListener("click", (e) => {
+    deleteMode = !deleteMode;
+    if (deleteMode) {
+        cross.classList.add("active");
+    } else {
+        cross.classList.remove("active");
+    }
+})
+
+// filtering tickets
+colorsContainer.addEventListener("click", function (e) {
+    let element = e.target;
+    if (element != colorsContainer) {
+        let colorFilter = element.classList[1];
+        filterTickets(colorFilter);
+    }
+})
+
+// how filtering (with color) works
+function filterTickets(filterColor) {
+    let allTickets = document.querySelectorAll('.ticket_box');
+    if (filterColor != currentFilterColor) {
+        currentFilterColor = filterColor;
+        for (let i = 0; i < allTickets.length; i++) {
+            let ticketColorContainer = allTickets[i].querySelector(".filter");
+            let ticketColor = ticketColorContainer.classList[1];
+            if (ticketColor == filterColor) {
+                allTickets[i].style.display = "block";
+            } else {
+                allTickets[i].style.display = "none";
+            }
+        }
+    } else {
+        currentFilterColor = "";
+        for (let i = 0; i < allTickets.length; i++) {
+            allTickets[i].style.display = "block";
+        }
+    }
+}
+
+
+// ***************************************************************************
+// LOCAL STORAGE
+// local storage -> storage in every browser that doesn't delete
+// even if you close the tab or the browser window.
+// It's not on the web, It's just a local storage,
+// basically an inbuilt inner storage of browser to collect local data and store it for future use.
+// eg.
+// ...
+// localStorage.setItem(<KEY>, <VALUE>);
+// localStorage.setItem("today", "Hello today");
+// localStorage.setItem("tomorrow", "Hello tomorrow");
+// localStorage.setItem("yesterday", "Hello yesterday");
+// let length = localStorage.length;
+// localStorage.removeItem("today");
+// localStorage.clear();
+// let item = localStorage.getItem("tomorrow");
+// ***************************************************************************
+
+
+// As soon as the web app opens,
+// check if any of the tickets are in the local storage,
+// if yes -> bring it to UI
+(function () {
+    let tickets = JSON.parse(localStorage.get('tasks')) || [];
+    for (let i = 0; i < tickets.length; i++) {
+        let { color, id, task } = tickets[i];
+        createTickets(color, id, task, false);
+    }
+    taskCreationBox.style.display = "none";
+})();
+
+/*
+.......................................................................................
+.......................................................................................
+........................................END............................................
+.......................................................................................
+.......................................................................................
+*/

@@ -85,6 +85,10 @@ body {
     font-weight: 500;
 }
 
+.active {
+    background-color: rgb(167, 157, 157);
+}
+
 /***********************************************************************/
 
 .task_creation_box {
@@ -155,9 +159,7 @@ body {
 
 .task_id{
     color:rgb(150, 144, 144);
-    /* margin: 0.2rem; */
-    /* margin-left: 0px; */
- }
+}
 
 .ticket_task {
     background-color: white;
