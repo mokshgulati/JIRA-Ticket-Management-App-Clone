@@ -151,30 +151,38 @@ body {
 .ticket_box {
     height: 8.5rem;
     width: 12.5rem;
+    background-color: white;
 }
 
 .filter {
-    height: 12px;
+    height: 10px;
 }
 
-.task_id{
+.task_id {
     color:rgb(150, 144, 144);
+    margin:0.7rem;
+    margin-left: 0.5rem;
+    margin-bottom: 0rem;
 }
 
 .ticket_task {
-    background-color: white;
-    height: calc(100% - 12px);
+    height: calc(8.5rem - 10px);
 }
 
 .task_text {
-    margin: 0.5rem;
-    height: calc(100% - 1rem);
-    width: calc(100% - 1rem);
+    margin: 0.3rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    height: 4.8rem;
     border: none;
     outline: none;
+    background-color: white;
+    overflow-y: scroll;
+    font-family:'Courier New';
+    font-weight: 700;
 }
 
-.task_text::-webkit-scrollbar {
+.task_text::-webkit-scrollbar{
     display: none;
 }
 

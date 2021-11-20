@@ -3,6 +3,7 @@ let uid = new ShortUniqueId();
 let selectedColor = "black";
 let deleteMode = false;
 let currentFilterColor = "";
+let colors = ["pink", "blue", "green", "black"];
 
 // elements
 let inputArea = document.querySelector(".text_box");
@@ -38,23 +39,75 @@ inputArea.addEventListener("keydown", function (e) {
     if (e.code == "Enter" && inputArea.value) {
         let id = uid();
         taskCreationBox.style.display = "none";
-        createTask(id, inputArea.value, selectedColor);
+        createTicket(selectedColor, id, inputArea.value, true);
         inputArea.value = "";
     }
 })
 
 // how tickets are made and displayed on the wall (inner working)
-function createTickets(color, id, task, flag) {
+function createTicket(color, id, task, flag) {
     let ticketBox = document.createElement("div");
     ticketBox.setAttribute("class", "ticket_box");
     restStage.appendChild(ticketBox);
     ticketBox.innerHTML = `
-        <div class="filter ${selectedColor}"></div>
+        <div class="filter ${color}"></div>
         <div class="ticket_task">
-        <h3 class="task-id">${id}</h3>
-        <textarea class="task_text" contentEditable="true">${task}</textarea>
+            <h3 class="task_id">#${id}</h3>
+            <div class="task_text" contentEditable="true">${task}</div>
         </div>
     `;
+    let ticketColor = ticketBox.querySelector('.filter');
+    let ticketText = ticketBox.querySelector(".task_text");
+    let nextColor = "";
+    ticketColor.addEventListener("click", (e) => {
+        let currentColor = ticketColor.classList[1];
+        let idx = colors.indexOf(currentColor);
+        nextColor = colors[(idx + 1) % 4];
+        ticketColor.classList.remove(currentColor);
+        ticketColor.classList.add(nextColor);
+        let idElement = ticketColor.parentNode.children[1].children[0];
+        let id = idElement.textContent;
+        id = id.slice(1);
+        let ticketsStoredInLocalStorage = JSON.parse(localStorage.get('tasks'));
+        // {color : "pink", id : "#5gdyt6e", task : "hello!!"}, {}, ...
+        for (let i = 0; i < ticketsStoredInLocalStorage.length; i++) {
+            if (id == ticketsStoredInLocalStorage.id) {
+                ticketsStoredInLocalStorage.color = nextColor;
+                break;
+            }
+        }
+        localStorage.setItem('tasks', JSON.stringify(ticketsStoredInLocalStorage));
+    })
+    ticketBox.addEventListener("click", (e) => {
+        if (deleteMode == true) {
+            ticketBox.remove();
+        }
+    })
+    ticketText.addEventListener("blur", function (e) {
+        let content = ticketText.textContent;
+        let idElement = ticketText.parentNode.children[0];
+        let id = idElement.textContent;
+        id = id.slice(1);
+        let ticketsStoredInLocalStorage = JSON.parse(localStorage.get('tasks'));
+        for (let i = 0; i < ticketsStoredInLocalStorage.length; i++) {
+            if (id == ticketsStoredInLocalStorage.id) {
+                ticketsStoredInLocalStorage.task = content;
+                break;
+            }
+        }
+        localStorage.setItem('tasks', JSON.stringify(ticketsStoredInLocalStorage));
+    })
+    if(flag==true){
+        let ticketsStoredInLocalStorage = JSON.parse(localStorage.get('tasks')) || [];
+        let ticketObj = {
+            color : color,
+            id : id,
+            task : task
+        }
+        ticketsStoredInLocalStorage.push(ticketObj);
+        localStorage.setItem('tasks',JSON.stringify(ticketsStoredInLocalStorage));
+    }
+    selectedColor = "black";
 }
 
 // clicking on lock button to disable editing
@@ -118,7 +171,6 @@ function filterTickets(filterColor) {
     }
 }
 
-
 // ***************************************************************************
 // LOCAL STORAGE
 // local storage -> storage in every browser that doesn't delete
@@ -137,7 +189,6 @@ function filterTickets(filterColor) {
 // let item = localStorage.getItem("tomorrow");
 // ***************************************************************************
 
-
 // As soon as the web app opens,
 // check if any of the tickets are in the local storage,
 // if yes -> bring it to UI
@@ -145,15 +196,7 @@ function filterTickets(filterColor) {
     let tickets = JSON.parse(localStorage.get('tasks')) || [];
     for (let i = 0; i < tickets.length; i++) {
         let { color, id, task } = tickets[i];
-        createTickets(color, id, task, false);
+        createTicket(color, id, task, false);
     }
     taskCreationBox.style.display = "none";
 })();
-
-/*
-.......................................................................................
-.......................................................................................
-........................................END............................................
-.......................................................................................
-.......................................................................................
-*/
