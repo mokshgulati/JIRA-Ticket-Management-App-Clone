@@ -17,8 +17,15 @@ let cross = document.querySelector(".cross");
 let lock = document.querySelector(".lock");
 let unlock = document.querySelector(".unlock");
 
-// show Modal on display
+// show Modal on display (on click)
 add.addEventListener("click", function (e) {
+    for (let i = 0; i < allColorSelection.length; i++) {
+        allColorSelection[i].classList.remove("selected");
+    }
+    allColorSelection[allColorSelection.length - 1].classList.add("selected");
+
+    inputArea.value = "";
+    selectedColor = "black";
     taskCreationBox.style.display = "flex";
 })
 
@@ -27,6 +34,7 @@ colorsSelection.addEventListener("click", function (e) {
     let element = e.target;
     if (element != colorsSelection) {
         selectedColor = element.classList[1];
+
         for (let i = 0; i < allColorSelection.length; i++) {
             allColorSelection[i].classList.remove("selected");
         }
@@ -39,8 +47,8 @@ inputArea.addEventListener("keydown", function (e) {
     if (e.code == "Enter" && inputArea.value) {
         let id = uid();
         taskCreationBox.style.display = "none";
+
         createTicket(selectedColor, id, inputArea.value, true);
-        inputArea.value = "";
     }
 })
 
@@ -53,61 +61,78 @@ function createTicket(color, id, task, flag) {
         <div class="filter ${color}"></div>
         <div class="ticket_task">
             <h3 class="task_id">#${id}</h3>
-            <div class="task_text" contentEditable="true">${task}</div>
+            <div class="task_text" contentEditable="false">${task}</div>
         </div>
     `;
+
     let ticketColor = ticketBox.querySelector('.filter');
     let ticketText = ticketBox.querySelector(".task_text");
     let nextColor = "";
+
     ticketColor.addEventListener("click", (e) => {
         let currentColor = ticketColor.classList[1];
         let idx = colors.indexOf(currentColor);
         nextColor = colors[(idx + 1) % 4];
         ticketColor.classList.remove(currentColor);
         ticketColor.classList.add(nextColor);
+
         let idElement = ticketColor.parentNode.children[1].children[0];
         let id = idElement.textContent;
         id = id.slice(1);
-        let ticketsStoredInLocalStorage = JSON.parse(localStorage.get('tasks'));
+        let ticketsStoredInLocalStorage = JSON.parse(localStorage.getItem('tasks'));
         // {color : "pink", id : "#5gdyt6e", task : "hello!!"}, {}, ...
         for (let i = 0; i < ticketsStoredInLocalStorage.length; i++) {
-            if (id == ticketsStoredInLocalStorage.id) {
-                ticketsStoredInLocalStorage.color = nextColor;
+            if (id == ticketsStoredInLocalStorage[i].id) {
+                ticketsStoredInLocalStorage[i].color = nextColor;
                 break;
             }
         }
         localStorage.setItem('tasks', JSON.stringify(ticketsStoredInLocalStorage));
     })
+
     ticketBox.addEventListener("click", (e) => {
         if (deleteMode == true) {
+
+            let idElement = ticketBox.children[1].children[0];
+            let id = idElement.textContent;
+            id = id.slice(1);
+            let ticketsStoredInLocalStorage = JSON.parse(localStorage.getItem('tasks'));
+            for (let i = 0; i < ticketsStoredInLocalStorage.length; i++) {
+                if (id == ticketsStoredInLocalStorage[i].id) {
+                    ticketsStoredInLocalStorage.splice(i, 1);
+                    break;
+                }
+            }
+            localStorage.setItem('tasks', JSON.stringify(ticketsStoredInLocalStorage));
+
             ticketBox.remove();
         }
     })
     ticketText.addEventListener("blur", function (e) {
         let content = ticketText.textContent;
+
         let idElement = ticketText.parentNode.children[0];
         let id = idElement.textContent;
         id = id.slice(1);
-        let ticketsStoredInLocalStorage = JSON.parse(localStorage.get('tasks'));
+        let ticketsStoredInLocalStorage = JSON.parse(localStorage.getItem('tasks'));
         for (let i = 0; i < ticketsStoredInLocalStorage.length; i++) {
-            if (id == ticketsStoredInLocalStorage.id) {
-                ticketsStoredInLocalStorage.task = content;
+            if (id == ticketsStoredInLocalStorage[i].id) {
+                ticketsStoredInLocalStorage[i].task = content;
                 break;
             }
         }
         localStorage.setItem('tasks', JSON.stringify(ticketsStoredInLocalStorage));
     })
-    if(flag==true){
-        let ticketsStoredInLocalStorage = JSON.parse(localStorage.get('tasks')) || [];
+    if (flag == true) {
+        let ticketsStoredInLocalStorage = JSON.parse(localStorage.getItem('tasks')) || [];
         let ticketObj = {
-            color : color,
-            id : id,
-            task : task
+            color: color,
+            id: id,
+            task: task
         }
         ticketsStoredInLocalStorage.push(ticketObj);
-        localStorage.setItem('tasks',JSON.stringify(ticketsStoredInLocalStorage));
+        localStorage.setItem('tasks', JSON.stringify(ticketsStoredInLocalStorage));
     }
-    selectedColor = "black";
 }
 
 // clicking on lock button to disable editing
@@ -116,8 +141,9 @@ lock.addEventListener("click", () => {
     for (let i = 0; i < ticketTextBoxes.length; i++) {
         ticketTextBoxes[i].contentEditable = false;
     }
-    unlock.classList.remove(".active");
-    lock.classList.add(".active");
+
+    unlock.classList.remove("active");
+    lock.classList.add("active");
 })
 
 // clicking on unlock button to enable editing
@@ -126,17 +152,21 @@ unlock.addEventListener("click", () => {
     for (let i = 0; i < ticketTextBoxes.length; i++) {
         ticketTextBoxes[i].contentEditable = true;
     }
+
     lock.classList.remove("active");
     unlock.classList.add("active");
 })
 
 // enabling cross button to delete tickets
 cross.addEventListener("click", (e) => {
-    deleteMode = !deleteMode;
-    if (deleteMode) {
-        cross.classList.add("active");
-    } else {
-        cross.classList.remove("active");
+    if (taskCreationBox.style.display == "none") {
+        deleteMode = !deleteMode;
+
+        if (deleteMode) {
+            cross.classList.add("active");
+        } else {
+            cross.classList.remove("active");
+        }
     }
 })
 
@@ -157,6 +187,7 @@ function filterTickets(filterColor) {
         for (let i = 0; i < allTickets.length; i++) {
             let ticketColorContainer = allTickets[i].querySelector(".filter");
             let ticketColor = ticketColorContainer.classList[1];
+
             if (ticketColor == filterColor) {
                 allTickets[i].style.display = "block";
             } else {
@@ -193,10 +224,11 @@ function filterTickets(filterColor) {
 // check if any of the tickets are in the local storage,
 // if yes -> bring it to UI
 (function () {
-    let tickets = JSON.parse(localStorage.get('tasks')) || [];
+    let tickets = JSON.parse(localStorage.getItem('tasks')) || [];
     for (let i = 0; i < tickets.length; i++) {
         let { color, id, task } = tickets[i];
         createTicket(color, id, task, false);
     }
+
     taskCreationBox.style.display = "none";
 })();
